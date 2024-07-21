@@ -1,0 +1,41 @@
+/* transkript */
+.transcript {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  color: black;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.transcript__title {
+  flex-shrink: 0;
+  margin-bottom: 0.5rem;
+}
+
+.transcript__subtitles {
+  flex: 1;
+  height: 0;
+  background-color: inherit;
+  text-align: left;
+  overflow: auto;
+}
+
+.transcript__subtitle {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  justify-items: left;
+  column-gap: 0.5rem;
+
+  font-weight: 500;
+  padding-inline: 0.5rem;
+  padding-block: 0.25rem;
+
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.transcript__subtitle--current {
+  border-radius: 0.25rem;
+  background-color: #c7cbf5;
+}
