@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import './video-transcript.css';
 import { Subtitle } from '../video-player/video-player';
+import { secondsToFormatedTime } from '../utils';
 
 type VideoTranscriptProps = {
   currentSubtitle: Subtitle | null;
@@ -50,9 +51,7 @@ function VideoTranscript({
                 onSubtitleClick(subtitle);
               }}
             >
-              <span>
-                {new Date(subtitle.start * 1000).toTimeString().slice(3, 9)}
-              </span>
+              <span>{secondsToFormatedTime(subtitle.start)}</span>
               <span>{subtitle.text}</span>
             </button>
           );
