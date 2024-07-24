@@ -34,8 +34,11 @@ function VideoTranscript({
   }, [currentSubtitle]);
 
   return (
-    <div className="transcript" {...props}>
-      <h3 className="transcript__title">Transkript</h3>
+    <div
+      className="flex flex-col p-2 text-black bg-white rounded-md shadow-md"
+      {...props}
+    >
+      <h3 className="text-xl font-semibold">Transkript</h3>
       <div className="transcript__subtitles">
         {subtitles.map((subtitle) => {
           const isCurrent = subtitle.sequence === currentSubtitle?.sequence;

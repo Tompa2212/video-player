@@ -43,3 +43,21 @@ export function formatSrt(srt: string) {
     return { sequence: Number(sequence), start, end, text };
   });
 }
+
+function append0IfSingleDigit(n: number) {
+  return n < 10 ? `0${n}` : n;
+}
+
+export function secondsToFormatedTime(seconds: number) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  const timeArr = [minutes, remainingSeconds];
+
+  if (hours) {
+    timeArr.unshift(hours);
+  }
+
+  return timeArr.map(append0IfSingleDigit).join(':');
+}
