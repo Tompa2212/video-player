@@ -14,6 +14,7 @@ import { useVideoContext } from './providers/video.provider';
 import { cn } from '@/lib/utils';
 import VideoTimeline from './video-timeline';
 import { useSubtitleContext } from './providers/subtitle.provider';
+import VideoSettingsControl from './video-settings-control';
 
 export default function VideoControls() {
   const [
@@ -95,6 +96,7 @@ export default function VideoControls() {
           <Button size="icon" variant="ghost" onClick={toggleShowSubtitles}>
             {showSubtitles ? <Captions /> : <CaptionsOff />}
           </Button>
+          <VideoSettingsControl />
           <Button size="icon" variant="ghost" onClick={toggleFullscreen}>
             <Maximize />
           </Button>
