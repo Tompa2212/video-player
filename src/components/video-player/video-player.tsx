@@ -1,6 +1,7 @@
 import { SubtitleProvider } from './providers/subtitle.provider';
 import { VideoProvider } from './providers/video.provider';
 import Video from './video';
+import './video-player.css';
 
 type VideoPlayerProps = {
   videoSrc: string;

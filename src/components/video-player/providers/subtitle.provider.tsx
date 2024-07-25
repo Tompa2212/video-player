@@ -2,17 +2,23 @@ import { create, useStore } from 'zustand';
 import { Subtitle } from '../video-player';
 import { createContext, useContext, useEffect, useRef } from 'react';
 
-export type SubtitleBgColor = 'black' | 'white' | 'transparent';
+export const subtitleBgColors = ['black', 'white'] as const;
+export const subtitleBgTransparencies = [0, 0.25, 0.5, 0.75, 1] as const;
+export const subtitleFontScales = [0.5, 0.75, 1, 1.25, 1.5, 1.75] as const;
+
+export type SubtitleBgColor = (typeof subtitleBgColors)[number];
+export type SubtitleBgTransparency = (typeof subtitleBgTransparencies)[number];
+export type SubtitleFontScale = (typeof subtitleFontScales)[number];
 
 type State = {
   showSubtitles: boolean;
   subtitles: Subtitle[];
   currentSubtitle: Subtitle | null;
   config: {
-    fontSize: number;
+    fontScale: number;
     fontColor: string;
     backgroundColor: SubtitleBgColor;
-    transparency: number;
+    backgroundTransparency: SubtitleBgTransparency;
   };
 };
 
@@ -21,6 +27,8 @@ type Action = {
   updateCurrentSubtitle: (subtitle: State['currentSubtitle']) => void;
   toggleShowSubtitles: () => void;
   updateBackgroundColor: (color: SubtitleBgColor) => void;
+  updateBackgroundTransparency: (transparency: SubtitleBgTransparency) => void;
+  updateFontScale: (fontScale: SubtitleFontScale) => void;
 };
 
 type SubtitleState = State & Action;
@@ -33,10 +41,10 @@ function createSubtitleStore({ subtitles = [] }: { subtitles?: Subtitle[] }) {
     subtitles,
     currentSubtitle: null,
     config: {
-      fontSize: 16,
+      fontScale: 1,
       fontColor: '#fff',
       backgroundColor: 'black',
-      transparency: 0.6
+      backgroundTransparency: 0.75
     },
     updateSubtitles: (subtitles: Subtitle[]) => set({ subtitles }),
     updateCurrentSubtitle: (currentSubtitle: Subtitle | null) =>
@@ -44,7 +52,13 @@ function createSubtitleStore({ subtitles = [] }: { subtitles?: Subtitle[] }) {
     toggleShowSubtitles: () =>
       set((state) => ({ showSubtitles: !state.showSubtitles })),
     updateBackgroundColor: (backgroundColor: SubtitleBgColor) =>
-      set((state) => ({ config: { ...state.config, backgroundColor } }))
+      set((state) => ({ config: { ...state.config, backgroundColor } })),
+    updateBackgroundTransparency: (
+      backgroundTransparency: SubtitleBgTransparency
+    ) =>
+      set((state) => ({ config: { ...state.config, backgroundTransparency } })),
+    updateFontScale: (fontScale: SubtitleFontScale) =>
+      set((state) => ({ config: { ...state.config, fontScale } }))
   }));
 }
 

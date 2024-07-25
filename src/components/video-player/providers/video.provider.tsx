@@ -16,6 +16,7 @@ type State = {
 
 type Action = {
   updateCurrentTime: (time: State['currentTime']) => void;
+  updateFullscreen: (fullscreen: State['fullscreen']) => void;
   updateVolume: (volume: State['volume']) => void;
   updatePaused: (paused: State['paused']) => void;
 
@@ -86,6 +87,7 @@ function createVideoStore({
     },
 
     updateCurrentTime: (currentTime) => set({ currentTime }),
+    updateFullscreen: (fullscreen) => set({ fullscreen }),
     updateVolume: (volume) => set({ volume }),
     updatePaused: (paused) => {
       const video = get().videoRef.current;

@@ -1,6 +1,4 @@
 import { useEffect } from 'react';
-// import VideoTranscript from '../video-transcript/video-transcript';
-import './video-player.css';
 import { useVideoContext } from './providers/video.provider';
 import VideoSubtitles from './video-subtitles';
 import { cn } from '@/lib/utils';
@@ -25,6 +23,7 @@ function Video({ videoSrc, onCurrentSubtitleChange }: VideoProps) {
     videoRef,
     videoContainerRef,
     updateCurrentTime,
+    updateFullscreen,
     initialiteVideoStore,
     handleVolumeChange,
     togglePlay
@@ -35,6 +34,7 @@ function Video({ videoSrc, onCurrentSubtitleChange }: VideoProps) {
       videoRef: state.videoRef,
       videoContainerRef: state.videoContainerRef,
       updateCurrentTime: state.updateCurrentTime,
+      updateFullscreen: state.updateFullscreen,
       initialiteVideoStore: state.initializeVideoStore,
       handleVolumeChange: state.handleVolumeChange,
       togglePlay: state.togglePlay
@@ -46,6 +46,19 @@ function Video({ videoSrc, onCurrentSubtitleChange }: VideoProps) {
       videoRef.current.load();
     }
   }, [videoRef, videoSrc]);
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      if (document.fullscreenElement !== videoContainerRef.current) {
+        updateFullscreen(false);
+      }
+    };
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', onFullscreenChange);
+    };
+  });
 
   function handleTimeUpdate(e: React.SyntheticEvent<HTMLVideoElement>) {
     const currentTime = e.currentTarget.currentTime;
@@ -62,27 +75,29 @@ function Video({ videoSrc, onCurrentSubtitleChange }: VideoProps) {
   }
 
   return (
-    <div ref={videoContainerRef} className="video group">
-      <video
-        ref={videoRef}
-        preload="metadata"
-        onTimeUpdate={handleTimeUpdate}
-        onClick={togglePlay}
-        onVolumeChange={handleVolumeChange}
-        onLoadedMetadata={(e) => {
-          const duration = e.currentTarget.duration;
-          const volume = e.currentTarget.volume;
-          const muted = e.currentTarget.muted;
-          const paused = e.currentTarget.paused;
+    <div className="video-container-q">
+      <div ref={videoContainerRef} className="video group">
+        <video
+          ref={videoRef}
+          preload="metadata"
+          onTimeUpdate={handleTimeUpdate}
+          onClick={togglePlay}
+          onVolumeChange={handleVolumeChange}
+          onLoadedMetadata={(e) => {
+            const duration = e.currentTarget.duration;
+            const volume = e.currentTarget.volume;
+            const muted = e.currentTarget.muted;
+            const paused = e.currentTarget.paused;
 
-          initialiteVideoStore({ duration, volume, muted, paused });
-        }}
-        className={cn(fullscreen && 'w-full h-full')}
-      >
-        <source src={videoSrc} type="video/mp4" />
-      </video>
-      <VideoSubtitles />
-      <VideoControls />
+            initialiteVideoStore({ duration, volume, muted, paused });
+          }}
+          className={cn(fullscreen && 'w-full h-full')}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+        <VideoSubtitles />
+        <VideoControls />
+      </div>
     </div>
   );
 }

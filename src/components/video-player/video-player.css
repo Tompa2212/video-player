@@ -7,8 +7,26 @@
   flex-direction: column;
 }
 
+.video-container-q {
+  --font-base: 0.75rem;
+  container-name: video;
+  container-type: inline-size;
+}
+
+@container video (min-width: 700px) {
+  .video {
+    --font-base: 1rem;
+  }
+}
+
+@container video (min-width: 1000px) {
+  .video {
+    ---font-base: 1.75rem;
+  }
+}
+
 .video.video--fullscreen {
   position: fixed;
   inset: 0;
-  z-index: 30;
+  z-index: 10;
 }
